@@ -60,7 +60,9 @@ public class Xml_tf_010 {
             logger.error("TransformerConfigurationException: " + e.getMessageAndLocation());
         } catch (TransformerException e) {
             logger.error("TransformerException: " + e.getMessageAndLocation());
-            vulnerable = Vulnerability.NO;
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
             logger.error("IOException: " + e.getMessage());
         } finally {

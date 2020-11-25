@@ -31,7 +31,7 @@ import java.util.Objects;
 public class Xml_tf_004 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_004.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_tf_004");
@@ -68,7 +68,9 @@ public class Xml_tf_004 {
             logger.error("TransformerConfigurationException: " + e.getMessageAndLocation());
         } catch (TransformerException e) {
             logger.error("TransformerException: " + e.getMessageAndLocation());
-            vulnerable = Vulnerability.NO;
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
             logger.error("IOException: " + e.getMessage());
         } finally {

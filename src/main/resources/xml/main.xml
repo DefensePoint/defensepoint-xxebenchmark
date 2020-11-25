@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<root  xmlns="http://main.xml"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xsi:schemaLocation="http://main.xml
+      file:///etc/main.xsd">
+
+    <e id="1"/>
+    <e id="2"/>
+    <e id="3"/>
+    <b><xi:include href="include.xml"/></b>
+    <e id="4"/>
+    <e id="5"/>
+    <e id="6"/>
+</root>

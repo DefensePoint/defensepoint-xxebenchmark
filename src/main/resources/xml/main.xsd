@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://main.xml"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:sn="http://main.xml"
+            elementFormDefault="qualified">
+
+    <xsd:element name="root">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="e" type="sn:elementType" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="elementType">
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+    </xsd:complexType>
+</xsd:schema>

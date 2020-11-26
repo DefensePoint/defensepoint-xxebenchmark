@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -23,7 +24,7 @@ import java.util.Objects;
 public class Xml_xif_009 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_009.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_xif_009");
@@ -40,6 +41,7 @@ public class Xml_xif_009 {
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
+            factory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
 
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));
 
@@ -59,7 +61,9 @@ public class Xml_xif_009 {
             }
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {

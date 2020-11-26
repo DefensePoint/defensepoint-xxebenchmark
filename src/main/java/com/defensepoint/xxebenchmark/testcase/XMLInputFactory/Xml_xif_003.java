@@ -26,10 +26,34 @@ import java.util.Objects;
 public class Xml_xif_003 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_003.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_xif_003");
+
+        Thread th = new Thread ( new Xml_xif_003_thread() , "Xml_xif_003_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_xif_003_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_xif_003_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
 
         String testId = "xml-xif-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
         String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
@@ -49,7 +73,6 @@ public class Xml_xif_003 {
 
             nowStart = LocalDateTime.now();
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));
-            nowEnd = LocalDateTime.now();
 
             if (streamReader != null) {
                 while (streamReader.hasNext()) {
@@ -65,6 +88,8 @@ public class Xml_xif_003 {
                     }
                 }
             }
+            nowEnd = LocalDateTime.now();
+
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
             vulnerable = Vulnerability.NO;
@@ -75,6 +100,7 @@ public class Xml_xif_003 {
             assert nowStart != null;
             long diff = ChronoUnit.MILLIS.between(nowStart, nowEnd);
 
+            logger.info(String.format("XML parsing took %d milliseconds.", diff));
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));

@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Xml_xif_011 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_011.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_xif_011");
@@ -33,6 +33,8 @@ public class Xml_xif_011 {
         Parser parser = Parser.XMLInputFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
+
+        String foo = "";
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
@@ -51,7 +53,7 @@ public class Xml_xif_011 {
                     if (streamReader.isStartElement()) {
                         //Read foo data
                         if (streamReader.getLocalName().equalsIgnoreCase("foo")) {
-                            String foo = streamReader.getElementText();
+                            foo = streamReader.getElementText();
                             logger.info(foo);
                         }
                     }
@@ -59,10 +61,11 @@ public class Xml_xif_011 {
             }
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
             logger.info("Result: " + result.toString());

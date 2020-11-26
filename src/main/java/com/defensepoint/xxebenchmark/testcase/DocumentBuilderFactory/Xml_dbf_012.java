@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Xml_dbf_012 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_012.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_dbf_012");
@@ -43,6 +43,8 @@ public class Xml_dbf_012 {
         //API to obtain DOM Document instance
         DocumentBuilder builder;
 
+        String foo = "";
+
         try {
             //Disallow dtd
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -57,8 +59,7 @@ public class Xml_dbf_012 {
             doc.getDocumentElement().normalize();
 
             Element element = doc.getDocumentElement();
-
-            String foo = element.getTextContent();
+            foo = element.getTextContent();
 
             logger.info(foo);
 
@@ -66,10 +67,11 @@ public class Xml_dbf_012 {
             logger.error("ParserConfigurationException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
             logger.info("Result: " + result.toString());

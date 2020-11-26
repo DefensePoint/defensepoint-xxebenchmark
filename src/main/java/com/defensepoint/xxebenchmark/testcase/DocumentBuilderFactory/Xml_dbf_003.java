@@ -26,7 +26,7 @@ import java.util.Objects;
 public class Xml_dbf_003 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_003.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_dbf_003");

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -35,7 +34,7 @@ public class Xml_xr_006 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosureDbf.xml")).getFile());
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             FooReaderHandler handler = new FooReaderHandler();

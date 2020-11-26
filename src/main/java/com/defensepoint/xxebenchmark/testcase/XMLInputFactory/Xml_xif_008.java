@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Xml_xif_008 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_008.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_xif_008");
@@ -42,6 +42,7 @@ public class Xml_xif_008 {
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
+            factory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 
@@ -63,7 +64,9 @@ public class Xml_xif_008 {
             }
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {

@@ -35,7 +35,7 @@ public class Xml_dbf_011 {
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localFileInclusion.xml")).getFile());
+        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localFileInclusionDbf.xml")).getFile());
 
         //Parser that produces DOM object trees from XML content
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

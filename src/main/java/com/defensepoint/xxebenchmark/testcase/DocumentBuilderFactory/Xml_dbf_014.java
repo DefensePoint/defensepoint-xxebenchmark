@@ -32,7 +32,7 @@ public class Xml_dbf_014 {
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / DTDs (doctypes) are disallowed";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteFileInclusion.xml")).getFile());

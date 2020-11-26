@@ -7,9 +7,9 @@ import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
@@ -32,13 +32,14 @@ public class Xml_dbf_007 {
         String testName = "Local Schema / default configuration";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        final Vulnerability[] vulnerable = {Vulnerability.NO};
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localSchema.xml")).getFile());
+        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localWrongSchemaDbf.xml")).getFile());
 
         //Parser that produces DOM object trees from XML content
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(true);
 
         //API to obtain DOM Document instance
         DocumentBuilder builder;
@@ -47,27 +48,39 @@ public class Xml_dbf_007 {
             //Create DocumentBuilder with default configuration
             builder = factory.newDocumentBuilder();
 
+            builder.setErrorHandler(new ErrorHandler()
+            {
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException
+                {
+                    logger.error("SAXParseException was thrown: " + exception.getMessage());
+                }
+
+                @Override
+                public void error(SAXParseException exception) throws SAXException
+                {
+                    vulnerable[0] = Vulnerability.YES;
+                    logger.error("SAXParseException was thrown: " + exception.getMessage());
+                }
+
+                @Override
+                public void warning(SAXParseException exception) throws SAXException
+                {
+                    logger.error("SAXParseException was thrown: " + exception.getMessage());
+                }
+            });
+
             //Parse the content to Document object
-            Document doc = builder.parse(xmlFile);
-
-            //Normalize the XML Structure
-            doc.getDocumentElement().normalize();
-
-            Element element = doc.getDocumentElement();
-
-            String foo = element.getTextContent();
-
-            logger.info(foo);
+            builder.parse(xmlFile);
 
         } catch (ParserConfigurationException e) {
             logger.error("ParserConfigurationException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
-            Result result = new Result(testId, testName, parser, configuration, vulnerable);
+            Result result = new Result(testId, testName, parser, configuration, vulnerable[0]);
             Result.results.add(result);
             logger.info("Result: " + result.toString());
         }

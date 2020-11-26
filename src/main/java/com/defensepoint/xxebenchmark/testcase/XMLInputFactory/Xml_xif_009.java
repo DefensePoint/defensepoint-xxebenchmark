@@ -32,7 +32,7 @@ public class Xml_xif_009 {
         String testName = "Remote Schema / default configuration";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value, vulnerable payload
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();

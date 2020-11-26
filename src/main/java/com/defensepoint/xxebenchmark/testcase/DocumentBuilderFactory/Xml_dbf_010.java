@@ -32,7 +32,7 @@ public class Xml_dbf_010 {
         String testName = "Remote Schema / DTDs (doctypes) are disallowed";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteSchema.xml")).getFile());

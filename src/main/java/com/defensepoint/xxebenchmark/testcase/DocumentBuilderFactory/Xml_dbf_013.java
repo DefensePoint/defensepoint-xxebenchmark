@@ -32,7 +32,7 @@ public class Xml_dbf_013 {
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / default configuration";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteFileInclusion.xml")).getFile());

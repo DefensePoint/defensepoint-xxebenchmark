@@ -1,33 +1,28 @@
 package com.defensepoint.xxebenchmark;
 
 import com.defensepoint.xxebenchmark.domain.Result;
-import com.defensepoint.xxebenchmark.testcase.XMLInputFactory.Xml_xif_003;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.FileWriter;
 import java.io.Writer;
 
 @Component
-public class XxebenchmarkApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
+public class SaveResults {
 
-    private static final Logger logger = LoggerFactory.getLogger(XxebenchmarkApplicationListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(SaveResults.class);
     private static final String CSV_LOCATION = "output.csv";
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        logger.info("ApplicationListener#onApplicationEvent()");
+    @PreDestroy
+    public void saveResultsToCsvFile() {
 
-        createResultsCsv();
-    }
+        logger.info("Save results to csv file");
 
-    private void createResultsCsv() {
         try {
             Writer writer  = new FileWriter(CSV_LOCATION);
 
@@ -50,6 +45,6 @@ public class XxebenchmarkApplicationListener implements ApplicationListener<Appl
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Bye Bye");
     }
-
 }

@@ -31,11 +31,35 @@ public class Xml_dbf_001 {
 
         logger.info("Xml_dbf_001");
 
+        Thread th = new Thread ( new Xml_dbf_001_thread() , "Xml_dbf_001_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_dbf_001_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_001_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-dbf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-001";
         String testName = "Denial-of-Service - Billion Laughs / default configuration";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/dos.xml")).getFile());
@@ -62,7 +86,6 @@ public class Xml_dbf_001 {
             doc.getDocumentElement().normalize();
 
             Element element = doc.getDocumentElement();
-
             String foo = element.getTextContent();
 
             logger.info(foo);

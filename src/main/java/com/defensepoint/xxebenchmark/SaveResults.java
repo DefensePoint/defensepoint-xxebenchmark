@@ -45,6 +45,6 @@ public class SaveResults {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Bye Bye");
+        System.out.println("Good luck!");
     }
 }

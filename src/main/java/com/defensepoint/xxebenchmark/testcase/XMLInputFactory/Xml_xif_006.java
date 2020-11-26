@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Xml_xif_006 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_006.class);
 
-    @PostConstruct
+    //@PostConstruct
     public void parse() {
 
         logger.info("Xml_xif_006");

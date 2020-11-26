@@ -35,7 +35,7 @@ public class Xml_dbf_009 {
         final Vulnerability[] vulnerable = {Vulnerability.NO};
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteSchema.xml")).getFile());
+        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteWrongSchema.xml")).getFile());
 
         //Parser that produces DOM object trees from XML content
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -51,20 +51,20 @@ public class Xml_dbf_009 {
             builder.setErrorHandler(new ErrorHandler()
             {
                 @Override
-                public void fatalError(SAXParseException exception) throws SAXException
+                public void fatalError(SAXParseException exception)
                 {
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }
 
                 @Override
-                public void error(SAXParseException exception) throws SAXException
+                public void error(SAXParseException exception)
                 {
                     vulnerable[0] = Vulnerability.YES;
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }
 
                 @Override
-                public void warning(SAXParseException exception) throws SAXException
+                public void warning(SAXParseException exception)
                 {
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }

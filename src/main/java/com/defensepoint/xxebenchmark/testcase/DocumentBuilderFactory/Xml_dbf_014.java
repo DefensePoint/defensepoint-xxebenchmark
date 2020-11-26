@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Xml_dbf_014 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_014.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_dbf_014");
@@ -43,6 +43,8 @@ public class Xml_dbf_014 {
         //API to obtain DOM Document instance
         DocumentBuilder builder;
 
+        String foo = "";
+
         try {
             //Disallow dtd
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -57,8 +59,7 @@ public class Xml_dbf_014 {
             doc.getDocumentElement().normalize();
 
             Element element = doc.getDocumentElement();
-
-            String foo = element.getTextContent();
+            foo = element.getTextContent();
 
             logger.info(foo);
 
@@ -70,6 +71,8 @@ public class Xml_dbf_014 {
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
             logger.info("Result: " + result.toString());

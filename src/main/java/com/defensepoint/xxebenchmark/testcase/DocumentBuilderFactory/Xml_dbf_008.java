@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Xml_dbf_008 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_008.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_dbf_008");
@@ -54,20 +54,20 @@ public class Xml_dbf_008 {
             builder.setErrorHandler(new ErrorHandler()
             {
                 @Override
-                public void fatalError(SAXParseException exception) throws SAXException
+                public void fatalError(SAXParseException exception)
                 {
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }
 
                 @Override
-                public void error(SAXParseException exception) throws SAXException
+                public void error(SAXParseException exception)
                 {
                     vulnerable[0] = Vulnerability.YES;
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }
 
                 @Override
-                public void warning(SAXParseException exception) throws SAXException
+                public void warning(SAXParseException exception)
                 {
                     logger.error("SAXParseException was thrown: " + exception.getMessage());
                 }

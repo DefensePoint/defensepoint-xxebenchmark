@@ -31,11 +31,35 @@ public class Xml_dbf_003 {
 
         logger.info("Xml_dbf_003");
 
+        Thread th = new Thread ( new Xml_dbf_003_thread() , "Xml_dbf_003_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_dbf_003_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_003_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-dbf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
         String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/quadraticBlowup.xml")).getFile());
@@ -62,7 +86,6 @@ public class Xml_dbf_003 {
             doc.getDocumentElement().normalize();
 
             Element element = doc.getDocumentElement();
-
             String foo = element.getTextContent();
 
             logger.info(foo);
@@ -70,7 +93,7 @@ public class Xml_dbf_003 {
         } catch (ParserConfigurationException e) {
             logger.error("ParserConfigurationException was thrown: " + e.getMessage());
         } catch (SAXException e) {
-            logger.error("SAXException was thrown: " + e.getMessage());
+            logger.error("SAXException was thrown: " +  e.getMessage());
             vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
@@ -79,6 +102,7 @@ public class Xml_dbf_003 {
             assert nowStart != null;
             long diff = ChronoUnit.MILLIS.between(nowStart, nowEnd);
 
+            logger.info(String.format("XML parsing took %d milliseconds.", diff));
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));

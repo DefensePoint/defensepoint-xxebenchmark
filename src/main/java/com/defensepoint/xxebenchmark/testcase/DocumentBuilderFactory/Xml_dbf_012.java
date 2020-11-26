@@ -32,7 +32,7 @@ public class Xml_dbf_012 {
         String testName = "Local File Inclusion / DTDs (doctypes) are disallowed";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localFileInclusion.xml")).getFile());

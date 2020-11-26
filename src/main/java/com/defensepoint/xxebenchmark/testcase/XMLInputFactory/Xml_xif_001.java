@@ -35,7 +35,7 @@ public class Xml_xif_001 {
         String testName = "Denial-of-Service - Billion Laughs / default configuration";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value, vulnerable payload
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         LocalDateTime nowStart = null;
         LocalDateTime nowEnd = null;

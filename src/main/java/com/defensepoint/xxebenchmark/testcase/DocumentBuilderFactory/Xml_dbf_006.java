@@ -32,7 +32,7 @@ public class Xml_dbf_006 {
         String testName = "File Disclosure / DTDs (doctypes) are disallowed";
         Parser parser = Parser.DocumentBuilderFactory;
         String configuration = "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         ClassLoader classLoader = getClass().getClassLoader();
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
@@ -42,6 +42,8 @@ public class Xml_dbf_006 {
 
         //API to obtain DOM Document instance
         DocumentBuilder builder;
+
+        String foo = "";
 
         try {
             //Disallow dtd
@@ -57,8 +59,7 @@ public class Xml_dbf_006 {
             doc.getDocumentElement().normalize();
 
             Element element = doc.getDocumentElement();
-
-            String foo = element.getTextContent();
+            foo = element.getTextContent();
 
             logger.info(foo);
 
@@ -66,10 +67,11 @@ public class Xml_dbf_006 {
             logger.error("ParserConfigurationException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
             logger.info("Result: " + result.toString());

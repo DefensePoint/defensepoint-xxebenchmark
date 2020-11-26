@@ -37,7 +37,7 @@ public class Xml_xif_004 {
         Parser parser = Parser.XMLInputFactory;
         String configuration = "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\") " +
                                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\")";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value, vulnerable payload
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         LocalDateTime nowStart = null;
         LocalDateTime nowEnd = null;

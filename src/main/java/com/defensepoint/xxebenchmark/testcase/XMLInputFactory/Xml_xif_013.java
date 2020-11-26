@@ -32,7 +32,7 @@ public class Xml_xif_013 {
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / default configuration";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.YES; // Default value, vulnerable payload
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();

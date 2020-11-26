@@ -35,6 +35,30 @@ public class Xml_tf_003 {
 
         logger.info("Xml_tf_003");
 
+        Thread th = new Thread ( new Xml_tf_003_thread() , "Xml_tf_003_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_tf_003_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_tf_003_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
         String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
         Parser parser = Parser.TransformerFactory;
@@ -76,6 +100,7 @@ public class Xml_tf_003 {
             assert nowStart != null;
             long diff = ChronoUnit.MILLIS.between(nowStart, nowEnd);
 
+            logger.info(String.format("XML parsing took %d milliseconds.", diff));
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));

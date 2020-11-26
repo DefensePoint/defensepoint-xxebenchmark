@@ -1,34 +1,29 @@
 package com.defensepoint.xxebenchmark.testcase.TransformerFactory;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
-import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 
 import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.Objects;
 
 @Component
 public class Xml_tf_010 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_010.class);
 
-    //@PostConstruct
+    @PostConstruct
     public void parse() {
 
         logger.info("Xml_tf_010");
@@ -39,22 +34,29 @@ public class Xml_tf_010 {
         String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
+        String foo = "";
+
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteSchema.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
-            TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
             transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-
             Transformer transformer = transformerFactory.newTransformer();
-            StreamSource source = new StreamSource(new StringReader(xmlString));
-            StringWriter writer = new StringWriter();
-            StreamResult target = new StreamResult(writer);
 
-            transformer.transform(source, target);
+            Document document = builder.newDocument();
+            try ( FileInputStream in = new FileInputStream(xmlFile)) {
+                Source loadSource = new StreamSource(in);
+                Result loadResult = new DOMResult(document);
+                transformer.transform(loadSource, loadResult);
+            }
+            document.getDocumentElement().normalize();
+            foo = document.getDocumentElement().getTextContent();
 
-            logger.info(writer.toString());
+            logger.info(foo);
 
         } catch (TransformerConfigurationException e) {
             logger.error("TransformerConfigurationException: " + e.getMessageAndLocation());
@@ -65,9 +67,11 @@ public class Xml_tf_010 {
             }
         } catch (IOException e) {
             logger.error("IOException: " + e.getMessage());
+        } catch (ParserConfigurationException e) {
+            logger.error("ParserConfigurationException: " + e.getMessage());
         } finally {
-            Result result = new Result(testId, testName, parser, configuration, vulnerable);
-            Result.results.add(result);
+            com.defensepoint.xxebenchmark.domain.Result result = new com.defensepoint.xxebenchmark.domain.Result(testId, testName, parser, configuration, vulnerable);
+            com.defensepoint.xxebenchmark.domain.Result.results.add(result);
             logger.info("Result: " + result.toString());
         }
     }

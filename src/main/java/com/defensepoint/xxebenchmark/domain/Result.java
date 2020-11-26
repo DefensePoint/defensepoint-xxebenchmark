@@ -1,5 +1,7 @@
 package com.defensepoint.xxebenchmark.domain;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class Result {
     private String configuration;
     private Vulnerability vulnerable;
 
-    public Result() {
+    public Result(Document document) {
     }
 
     public Result(String testId, String testName, Parser parser, String configuration, Vulnerability vulnerable) {

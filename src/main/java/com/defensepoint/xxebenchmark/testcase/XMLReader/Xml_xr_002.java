@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -29,6 +28,30 @@ public class Xml_xr_002 {
     public void parse() {
 
         logger.info("Xml_xr_002");
+
+        Thread th = new Thread ( new Xml_xr_002_thread() , "Xml_xr_002_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_xr_002_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_xr_002_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
 
         String testId = "xml-xr-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-002";
         String testName = "Denial-of-Service - Billion Laughs / DTDs (doctypes) are disallowed";
@@ -49,8 +72,10 @@ public class Xml_xr_002 {
             reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             reader.setContentHandler(handler);
 
+            StringReader stringReader = new StringReader(xmlString);
+            InputSource inputSource = new InputSource(stringReader);
             nowStart = LocalDateTime.now();
-            reader.parse(new InputSource(new StringReader(xmlString)));
+            reader.parse(inputSource);
             nowEnd = LocalDateTime.now();
 
             logger.info(handler.getFoo());

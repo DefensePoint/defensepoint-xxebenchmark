@@ -34,6 +34,30 @@ public class Xml_sr_002 {
 
         logger.info("Xml_sr_002");
 
+        Thread th = new Thread ( new Xml_sr_002_thread() , "Xml_sr_002_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_sr_002_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sr_002_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-sr-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-002";
         String testName = "Denial-of-Service - Billion Laughs / DTDs (doctypes) are disallowed";
         Parser parser = Parser.SAXReader;

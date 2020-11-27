@@ -92,7 +92,6 @@ class Xml_xif_001_thread implements Runnable {
 
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
@@ -100,10 +99,12 @@ class Xml_xif_001_thread implements Runnable {
             assert nowStart != null;
             long diff = ChronoUnit.MILLIS.between(nowStart, nowEnd);
 
-            logger.info(String.format("XML parsing took %d milliseconds.", diff));
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));
+            } else {
+                logger.info(String.format("XML parsing takes less than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));
+                vulnerable = Vulnerability.NO;
             }
 
             Result result = new Result(testId, testName, parser, configuration, vulnerable);

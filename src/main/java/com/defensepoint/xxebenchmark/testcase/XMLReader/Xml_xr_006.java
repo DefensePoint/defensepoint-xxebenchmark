@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -32,6 +33,8 @@ public class Xml_xr_006 {
         String configuration = "reader.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
+        String foo = "";
+
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosureDbf.xml")).getFile());
@@ -44,7 +47,8 @@ public class Xml_xr_006 {
 
             reader.parse(new InputSource(new StringReader(xmlString)));
 
-            logger.info(handler.getFoo());
+            foo = handler.getFoo();
+            logger.info(foo);
 
         } catch (IOException e) {
             logger.error("IOException was thrown: " + e.getMessage());
@@ -54,11 +58,12 @@ public class Xml_xr_006 {
             logger.error("SAXNotSupportedException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
-            logger.info(result.toString());
+            logger.info("Result: " + result.toString());
         }
     }
 }

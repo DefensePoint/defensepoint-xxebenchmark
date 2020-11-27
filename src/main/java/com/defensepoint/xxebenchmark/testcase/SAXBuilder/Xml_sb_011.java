@@ -1,14 +1,16 @@
-package com.defensepoint.xxebenchmark.testcase.XMLReader;
+package com.defensepoint.xxebenchmark.testcase.SAXBuilder;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.util.OSUtil;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.xml.sax.*;
-import org.xml.sax.helpers.XMLReaderFactory;
+import org.xml.sax.InputSource;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -19,17 +21,17 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 @Component
-public class Xml_xr_011 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_xr_011.class);
+public class Xml_sb_011 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sb_011.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_xr_011");
+        logger.info("Xml_sb_011");
 
-        String testId = "xml-xr-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-011";
+        String testId = "xml-sb-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-011";
         String testName = "Local File Inclusion / default configuration";
-        Parser parser = Parser.XMLReader;
+        Parser parser = Parser.SAXBuilder;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
@@ -40,29 +42,26 @@ public class Xml_xr_011 {
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localFileInclusion.xml")).getFile());
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
-            FooReaderHandler handler = new FooReaderHandler();
-            XMLReader reader = XMLReaderFactory.createXMLReader();
-            reader.setContentHandler(handler);
+            SAXBuilder builder = new SAXBuilder();
 
-            reader.parse(new InputSource(new StringReader(xmlString)));
+            StringReader stringReader = new StringReader(xmlString);
+            InputSource inputSource = new InputSource(stringReader);
+            Document document = builder.build(inputSource);
 
-            foo = handler.getFoo();
+            foo = document.getRootElement().getText();
+
             logger.info(foo);
 
         } catch (IOException e) {
-            logger.error("IOException was thrown: " + e.getMessage());
-        } catch (SAXNotRecognizedException e) {
-            logger.error("SAXNotRecognizedException was thrown: " + e.getMessage());
-        } catch (SAXNotSupportedException e) {
-            logger.error("SAXNotSupportedException was thrown: " + e.getMessage());
-        } catch (SAXException e) {
-            logger.error("SAXException was thrown: " + e.getMessage());
+            logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
+        } catch (JDOMException e) {
+            logger.error("JDOMException was thrown. " + e.getMessage());
         } finally {
             vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
 
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
-            logger.info("Result: " + result.toString());
+            logger.info(result.toString());
         }
     }
 }

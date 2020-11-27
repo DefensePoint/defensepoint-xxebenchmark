@@ -5,7 +5,7 @@ package com.defensepoint.xxebenchmark.domain;
  */
 public final class Constants {
 
-    public static final long DoS_THRESHOLD = 20;
+    public static final long DoS_THRESHOLD = 50;
     public static final long DoS_THREAD_DURATION = 1000;
 
     private Constants() {

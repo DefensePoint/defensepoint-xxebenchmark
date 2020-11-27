@@ -11,6 +11,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import javax.annotation.PostConstruct;
+import javax.xml.stream.XMLInputFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,6 +34,8 @@ public class Xml_xr_007 {
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
+        String foo = "";
+
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localSchema.xml")).getFile());
@@ -44,7 +47,8 @@ public class Xml_xr_007 {
 
             reader.parse(new InputSource(new StringReader(xmlString)));
 
-            logger.info(handler.getFoo());
+            foo = handler.getFoo();
+            logger.info(foo);
 
         } catch (IOException e) {
             logger.error("IOException was thrown: " + e.getMessage());
@@ -54,11 +58,12 @@ public class Xml_xr_007 {
             logger.error("SAXNotSupportedException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } finally {
+            vulnerable = foo.equalsIgnoreCase("hello") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
-            logger.info(result.toString());
+            logger.info("Result: " + result.toString());
         }
     }
 }

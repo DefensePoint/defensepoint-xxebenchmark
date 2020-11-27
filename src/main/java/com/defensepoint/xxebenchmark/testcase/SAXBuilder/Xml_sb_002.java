@@ -5,9 +5,9 @@ import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.util.OSUtil;
-import org.jdom2.JDOMException;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-import static com.defensepoint.xxebenchmark.domain.Parser.SAXBuilder;
-
 @Component
 public class Xml_sb_002 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_sb_002.class);
@@ -35,10 +33,34 @@ public class Xml_sb_002 {
 
         logger.info("Xml_sb_002");
 
+        Thread th = new Thread ( new Xml_sb_002_thread() , "Xml_sb_002_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_sb_002_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sb_002_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-sb-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-002";
         String testName = "Denial-of-Service - Billion Laughs / DTDs (doctypes) are disallowed";
-        Parser parser = SAXBuilder;
-        String configuration = "builder.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\",true)";
+        Parser parser = Parser.SAXBuilder;
+        String configuration = "builder.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         LocalDateTime nowStart = null;
@@ -50,10 +72,12 @@ public class Xml_sb_002 {
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             SAXBuilder builder = new SAXBuilder();
-            builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl",true);
+            builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 
+            StringReader stringReader = new StringReader(xmlString);
+            InputSource inputSource = new InputSource(stringReader);
             nowStart = LocalDateTime.now();
-            Document document = builder.build(new InputSource(new StringReader(xmlString)));
+            Document document = builder.build(inputSource);
             nowEnd = LocalDateTime.now();
 
             Element root = document.getRootElement();

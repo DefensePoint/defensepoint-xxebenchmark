@@ -1,0 +1,2 @@
+<!ELEMENT note (foo)>
+<!ELEMENT foo (#PCDATA)>

@@ -1,17 +1,16 @@
-package com.defensepoint.xxebenchmark.testcase.SAXReader;
+package com.defensepoint.xxebenchmark.testcase.SAXBuilder;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.util.OSUtil;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -22,19 +21,19 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 @Component
-public class Xml_sr_014 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_sr_014.class);
+public class Xml_sb_014 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sb_014.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_sr_014");
+        logger.info("Xml_sb_014");
 
-        String testId = "xml-sr-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-014";
+        String testId = "xml-sb-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-014";
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / DTDs (doctypes) are disallowed";
-        Parser parser = Parser.SAXReader;
-        String configuration = "xmlReader.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
-        Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
+        Parser parser = Parser.SAXBuilder;
+        String configuration = "builder.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         String foo = "";
 
@@ -43,21 +42,21 @@ public class Xml_sr_014 {
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteFileInclusion.xml")).getFile());
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
-            SAXReader xmlReader = new SAXReader();
-            xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            SAXBuilder builder = new SAXBuilder();
+            builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 
-            Document document = xmlReader.read(new InputSource(new StringReader(xmlString)));
+            StringReader stringReader = new StringReader(xmlString);
+            InputSource inputSource = new InputSource(stringReader);
+            Document document = builder.build(inputSource);
 
             foo = document.getRootElement().getText();
 
             logger.info(foo);
 
-        } catch (DocumentException e) {
-            logger.error("DocumentException was thrown: " + e.getMessage());
         } catch (IOException e) {
-            logger.error("IOException was thrown: " + e.getMessage());
-        } catch (SAXException e) {
-            logger.error("SAXException was thrown: " + e.getMessage());
+            logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
+        } catch (JDOMException e) {
+            logger.error("JDOMException was thrown. " + e.getMessage());
         } finally {
             vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
 

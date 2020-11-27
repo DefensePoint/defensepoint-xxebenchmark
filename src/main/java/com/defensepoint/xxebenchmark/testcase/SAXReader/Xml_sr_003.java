@@ -33,6 +33,30 @@ public class Xml_sr_003 {
 
         logger.info("Xml_sr_003");
 
+        Thread th = new Thread ( new Xml_sr_003_thread() , "Xml_sr_003_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_sr_003_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sr_003_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
         String testId = "xml-sr-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
         String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
         Parser parser = Parser.SAXReader;
@@ -56,6 +80,7 @@ public class Xml_sr_003 {
             Element root = document.getRootElement();
 
             logger.info(root.getText());
+
 
         } catch (DocumentException e) {
             logger.error("DocumentException was thrown: " + e.getMessage());

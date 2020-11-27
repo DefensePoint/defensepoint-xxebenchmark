@@ -33,6 +33,8 @@ public class Xml_xr_014 {
         String configuration = "reader.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
+        String foo = "";
+
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteFileInclusion.xml")).getFile());
@@ -45,7 +47,8 @@ public class Xml_xr_014 {
 
             reader.parse(new InputSource(new StringReader(xmlString)));
 
-            logger.info(handler.getFoo());
+            foo = handler.getFoo();
+            logger.info(foo);
 
         } catch (IOException e) {
             logger.error("IOException was thrown: " + e.getMessage());
@@ -55,11 +58,12 @@ public class Xml_xr_014 {
             logger.error("SAXNotSupportedException was thrown: " + e.getMessage());
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            vulnerable = Vulnerability.NO;
         } finally {
+            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
+
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
-            logger.info(result.toString());
+            logger.info("Result: " + result.toString());
         }
     }
 }

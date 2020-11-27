@@ -22,7 +22,7 @@ import java.util.Objects;
 public class Xml_tf_009 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_009.class);
 
-    @PostConstruct
+    //@PostConstruct
     public void parse() {
 
         logger.info("Xml_tf_009");

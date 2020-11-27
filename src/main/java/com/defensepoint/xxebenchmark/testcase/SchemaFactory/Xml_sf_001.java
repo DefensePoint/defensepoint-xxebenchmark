@@ -44,6 +44,8 @@ public class Xml_sf_001 {
 
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+//            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             Schema schema = factory.newSchema(xsdFile);
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(xmlFile));

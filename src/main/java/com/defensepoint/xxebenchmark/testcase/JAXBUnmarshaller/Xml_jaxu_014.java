@@ -17,16 +17,16 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 @Component
-public class Xml_jaxu_008 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_jaxu_008.class);
+public class Xml_jaxu_014 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_jaxu_014.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_jaxu_008");
+        logger.info("Xml_jaxu_014");
 
-        String testId = "xml-jaxu-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-008";
-        String testName = "Local Schema / DTDs (doctypes) are disallowed";
+        String testId = "xml-jaxu-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-014";
+        String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / default configuration";
         Parser parser = Parser.JAXBUnmarshaller;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
@@ -35,7 +35,7 @@ public class Xml_jaxu_008 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localSchemaNote.xml")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteFileInclusionNote.xml")).getFile());
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             JAXBContext jaxbContext = JAXBContext.newInstance(Note.class);

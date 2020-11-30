@@ -36,7 +36,7 @@ public class SaveResults {
             mappingStrategy.setColumnMapping(columns);
 
             StatefulBeanToCsv sbc = new StatefulBeanToCsvBuilder(writer)
-                    .withSeparator('|')
+                    .withSeparator(',')
                     .withMappingStrategy(mappingStrategy)
                     .build();
 

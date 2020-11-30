@@ -17,22 +17,22 @@ import java.io.StringWriter;
 import java.util.Objects;
 
 @Component
-public class Xml_tf_015 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_tf_015.class);
+public class Xml_tf_017 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_tf_017.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_tf_015");
+        logger.info("Xml_tf_017");
 
-        String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-015";
-        String testName = "Local XSLT Transformation / default configuration";
+        String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-017";
+        String testName = "Remote XSLT Transformation / default configuration";
         Parser parser = Parser.TransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xslt")).getFile());
+        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fooRemote.xslt")).getFile());
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xml")).getFile());
         Source xslt = new StreamSource(xsltFile);
         Source xml  = new StreamSource(xmlFile);
@@ -48,7 +48,6 @@ public class Xml_tf_015 {
             Transformer transformer = transformerFactory.newTransformer(xslt);
             transformer.transform(xml, target);
 
-            content = writer.toString();
             logger.info(writer.toString());
         } catch (TransformerConfigurationException e) {
             logger.error("TransformerConfigurationException was thrown. " + e.getMessage());

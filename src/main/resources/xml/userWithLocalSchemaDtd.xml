@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE foo SYSTEM "../files/foo.dtd">
+<user>
+    <name>Jond</name>
+    <surname>Doe</surname>
+</user>

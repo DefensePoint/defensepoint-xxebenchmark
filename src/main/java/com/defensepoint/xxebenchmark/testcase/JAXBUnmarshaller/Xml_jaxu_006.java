@@ -52,6 +52,8 @@ public class Xml_jaxu_006 {
             logger.error("JAXBException was thrown: " + e.getMessage());
         } catch (IOException e) {
             logger.error("IOException was thrown: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("Exception was thrown: " + e.getMessage());
         } finally {
             vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
 

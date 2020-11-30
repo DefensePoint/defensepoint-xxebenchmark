@@ -28,7 +28,6 @@ public class Xml_dbf_001 {
 
     //@PostConstruct
     public void parse() {
-
         logger.info("Xml_dbf_001");
 
         Thread th = new Thread ( new Xml_dbf_001_thread() , "Xml_dbf_001_thread");

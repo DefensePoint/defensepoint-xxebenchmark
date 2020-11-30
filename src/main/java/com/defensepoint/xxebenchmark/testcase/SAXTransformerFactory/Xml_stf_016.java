@@ -1,4 +1,4 @@
-package com.defensepoint.xxebenchmark.testcase.TransformerFactory;
+package com.defensepoint.xxebenchmark.testcase.SAXTransformerFactory;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
@@ -17,18 +17,18 @@ import java.io.StringWriter;
 import java.util.Objects;
 
 @Component
-public class Xml_tf_015 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_tf_015.class);
+public class Xml_stf_016 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_stf_016.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_tf_015");
+        logger.info("Xml_stf_016");
 
-        String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-015";
-        String testName = "Local XSLT Transformation / default configuration";
+        String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-016";
+        String testName = "Local XSLT Transformation / FEATURE_SECURE_PROCESSING is enabled";
         Parser parser = Parser.TransformerFactory;
-        String configuration = "";
+        String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -44,11 +44,11 @@ public class Xml_tf_015 {
 
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             Transformer transformer = transformerFactory.newTransformer(xslt);
             transformer.transform(xml, target);
 
-            content = writer.toString();
             logger.info(writer.toString());
         } catch (TransformerConfigurationException e) {
             logger.error("TransformerConfigurationException was thrown. " + e.getMessage());

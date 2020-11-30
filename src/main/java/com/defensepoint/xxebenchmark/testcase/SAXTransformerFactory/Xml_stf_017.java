@@ -1,4 +1,4 @@
-package com.defensepoint.xxebenchmark.testcase.TransformerFactory;
+package com.defensepoint.xxebenchmark.testcase.SAXTransformerFactory;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.xml.XMLConstants;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -17,22 +16,22 @@ import java.io.StringWriter;
 import java.util.Objects;
 
 @Component
-public class Xml_tf_015 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_tf_015.class);
+public class Xml_stf_017 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_stf_017.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_tf_015");
+        logger.info("Xml_stf_017");
 
-        String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-015";
-        String testName = "Local XSLT Transformation / default configuration";
+        String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-017";
+        String testName = "Remote XSLT Transformation / default configuration";
         Parser parser = Parser.TransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xslt")).getFile());
+        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fooRemote.xslt")).getFile());
         File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xml")).getFile());
         Source xslt = new StreamSource(xsltFile);
         Source xml  = new StreamSource(xmlFile);
@@ -48,7 +47,6 @@ public class Xml_tf_015 {
             Transformer transformer = transformerFactory.newTransformer(xslt);
             transformer.transform(xml, target);
 
-            content = writer.toString();
             logger.info(writer.toString());
         } catch (TransformerConfigurationException e) {
             logger.error("TransformerConfigurationException was thrown. " + e.getMessage());

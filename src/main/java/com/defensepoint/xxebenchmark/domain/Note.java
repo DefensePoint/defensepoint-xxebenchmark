@@ -3,11 +3,12 @@ package com.defensepoint.xxebenchmark.domain;
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "note")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Note {
 
+    @XmlElement(name = "foo")
     private String foo;
 
-    @XmlElement(name = "foo")
     public String getFoo() {
         return foo;
     }
@@ -18,8 +19,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return "Foo{" +
-                "foo='" + foo + '\'' +
-                '}';
+        return "foo=" + foo;
     }
 }

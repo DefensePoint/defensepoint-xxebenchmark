@@ -23,15 +23,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Component
-public class Xml_sf_002 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_sf_002.class);
+public class Xml_sf_003 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sf_003.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_sf_002");
+        logger.info("Xml_sf_003");
 
-        Thread th = new Thread ( new Xml_sf_002_thread() , "Xml_sf_002_thread");
+        Thread th = new Thread ( new Xml_sf_003_thread() , "Xml_sf_003_thread");
         th.start();
 
         new java.util.Timer().schedule(
@@ -47,18 +47,18 @@ public class Xml_sf_002 {
     }
 }
 
-class Xml_sf_002_thread implements Runnable {
+class Xml_sf_003_thread implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(Xml_sf_002_thread.class);
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sf_003_thread.class);
 
     @Override
     public void run() {
         logger.info("Start thread: " + Thread.currentThread().getName());
 
-        String testId = "xml-sf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-002";
-        String testName = "Denial-of-Service - Billion Laughs / FEATURE_SECURE_PROCESSING is enabled";
+        String testId = "xml-sf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
+        String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
         Parser parser = Parser.SchemaFactory;
-        String configuration = "factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
+        String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         LocalDateTime nowStart = null;
@@ -67,11 +67,10 @@ class Xml_sf_002_thread implements Runnable {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xsd")).getFile());
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/userWithBillionLaughsDtd.xml")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/userWithQuadraticBlowupDtd.xml")).getFile());
             StreamSource source = new StreamSource(xmlFile);
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             Schema schema = factory.newSchema(xsdFile);
 
             Validator validator = schema.newValidator();

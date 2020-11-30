@@ -20,13 +20,13 @@ import java.util.Objects;
 public class Xml_tf_016 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_016.class);
 
-    @PostConstruct
+    //@PostConstruct
     public void parse() {
 
         logger.info("Xml_tf_016");
 
         String testId = "xml-tf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-016";
-        String testName = "XSLT Transformation / FEATURE_SECURE_PROCESSING is enabled";
+        String testName = "Local XSLT Transformation / FEATURE_SECURE_PROCESSING is enabled";
         Parser parser = Parser.TransformerFactory;
         String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload

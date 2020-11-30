@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE user [
+        <!ENTITY ent SYSTEM "../files/passwd">
+        <!ELEMENT user (name,surname) >
+        <!ELEMENT name (#PCDATA) >
+        <!ELEMENT surname (#PCDATA) >
+        ]>
+<user>
+    <name>Jond</name>
+    <surname>&ent;</surname>
+</user>

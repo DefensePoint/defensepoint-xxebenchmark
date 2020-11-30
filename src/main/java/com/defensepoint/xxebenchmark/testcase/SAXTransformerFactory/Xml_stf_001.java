@@ -56,7 +56,7 @@ class Xml_stf_001_thread implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(Xml_stf_001_thread.class);
 
-    @Override
+    //@Override
     public void run() {
         logger.info("Start thread: " + Thread.currentThread().getName());
 

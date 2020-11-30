@@ -1,9 +1,9 @@
 package com.defensepoint.xxebenchmark.testcase.SchemaFactory;
 
+import com.defensepoint.xxebenchmark.domain.Constants;
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
-import com.defensepoint.xxebenchmark.util.JavaUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,8 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Component
@@ -25,34 +27,78 @@ public class Xml_sf_001 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_sf_001.class);
 
     //@PostConstruct
-    public void validate() {
+    public void parse() {
 
         logger.info("Xml_sf_001");
 
-        String testId = "xml-sf-" + OSUtil.getOS() + "-" + JavaUtil.getJavaVersion() + "-001";
-        String testName = "Validate Schema";
+        Thread th = new Thread ( new Xml_sf_001_thread() , "Xml_sf_001_thread");
+        th.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.info("Stop thread: " + th.getName());
+                        th.stop();
+                    }
+                },
+                Constants.DoS_THREAD_DURATION
+        );
+    }
+}
+
+class Xml_sf_001_thread implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Xml_sf_001_thread.class);
+
+    @Override
+    public void run() {
+        logger.info("Start thread: " + Thread.currentThread().getName());
+
+        String testId = "xml-sf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-001";
+        String testName = "Denial-of-Service - Billion Laughs / default configuration";
         Parser parser = Parser.SchemaFactory;
         String configuration = "";
-        Vulnerability vulnerable = Vulnerability.NO;
+        Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
-        Result result = new Result(testId, testName, parser, configuration, vulnerable);
-        Result.results.add(result);
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xsd")).getFile());
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xml")).getFile());
+        LocalDateTime nowStart = null;
+        LocalDateTime nowEnd = null;
 
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xsd")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/userWithBillionLaughsDtd.xml")).getFile());
+            StreamSource source = new StreamSource(xmlFile);
+
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-//            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-//            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             Schema schema = factory.newSchema(xsdFile);
+
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(xmlFile));
+
+            nowStart = LocalDateTime.now();
+            validator.validate(source);
+            nowEnd = LocalDateTime.now();
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
-            logger.error("Exception was thrown. Exception occurred, XXE may still possible: " + e.getMessage());
+            logger.error("IOException was thrown. Exception occurred, XXE may still possible: " + e.getMessage());
+        } finally {
+            nowEnd = nowEnd == null ? LocalDateTime.now() : nowEnd;
+            assert nowStart != null;
+            long diff = ChronoUnit.MILLIS.between(nowStart, nowEnd);
+
+            logger.info(String.format("XML parsing took %d milliseconds.", diff));
+            if(diff > Constants.DoS_THRESHOLD) {
+                vulnerable = Vulnerability.YES;
+                logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));
+            }
+
+            Result result = new Result(testId, testName, parser, configuration, vulnerable);
+            Result.results.add(result);
+            logger.info(result.toString());
         }
     }
 }

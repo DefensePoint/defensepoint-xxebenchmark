@@ -4,6 +4,7 @@ import com.defensepoint.xxebenchmark.domain.Constants;
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
+import com.defensepoint.xxebenchmark.service.TimeOutTask;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Timer;
 
-@Component
+//@Component
 public class Xml_xif_001 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_xif_001.class);
 
@@ -31,19 +33,10 @@ public class Xml_xif_001 {
 
         logger.info("Xml_xif_001");
 
-        Thread th = new Thread ( new Xml_xif_001_thread() , "Xml_xif_001_thread");
-        th.start();
-
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        logger.info("Stop thread: " + th.getName());
-                        th.stop();
-                    }
-                },
-                Constants.DoS_THREAD_DURATION
-        );
+        Thread t = new Thread(new Xml_xif_001_thread());
+        Timer timer = new Timer();
+        timer.schedule(new TimeOutTask(t, timer), Constants.DoS_THREAD_DURATION);
+        t.start();
     }
 }
 

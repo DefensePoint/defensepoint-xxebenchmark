@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_tf_013 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_013.class);
 

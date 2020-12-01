@@ -3,6 +3,7 @@ package com.defensepoint.xxebenchmark.testcase.SAXBuilder;
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -15,12 +16,13 @@ import org.xml.sax.InputSource;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_sb_005 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_sb_005.class);
 
@@ -39,8 +41,8 @@ public class Xml_sb_005 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/fileDisclosure.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             SAXBuilder builder = new SAXBuilder();
 

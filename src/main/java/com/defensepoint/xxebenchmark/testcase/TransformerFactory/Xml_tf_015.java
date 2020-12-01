@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_tf_015 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_tf_015.class);
 
@@ -49,7 +49,8 @@ public class Xml_tf_015 {
             transformer.transform(xml, target);
 
             content = writer.toString();
-            logger.info(writer.toString());
+
+            logger.info(content);
         } catch (TransformerConfigurationException e) {
             logger.error("TransformerConfigurationException was thrown. " + e.getMessage());
         } catch (TransformerException e) {

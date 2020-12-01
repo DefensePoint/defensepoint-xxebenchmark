@@ -20,12 +20,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_sf_010 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_sf_010.class);
 
     //@PostConstruct
-    public void validate() {
+    public void parse() {
 
         logger.info("Xml_sf_010");
 

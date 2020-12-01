@@ -1,6 +1,7 @@
 package com.defensepoint.xxebenchmark.testcase.JAXBUnmarshaller;
 
 import com.defensepoint.xxebenchmark.domain.*;
+import com.defensepoint.xxebenchmark.service.TimeOutTask;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Timer;
 
-@Component
+//@Component
 public class Xml_jaxu_004 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_jaxu_004.class);
 
@@ -29,19 +31,10 @@ public class Xml_jaxu_004 {
 
         logger.info("Xml_jaxu_004");
 
-        Thread th = new Thread ( new Xml_jaxu_004_thread() , "Xml_jaxu_004_thread");
-        th.start();
-
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        logger.info("Stop thread: " + th.getName());
-                        th.stop();
-                    }
-                },
-                Constants.DoS_THREAD_DURATION
-        );
+        Thread t = new Thread(new Xml_jaxu_004_thread());
+        Timer timer = new Timer();
+        timer.schedule(new TimeOutTask(t, timer), Constants.DoS_THREAD_DURATION);
+        t.start();
     }
 }
 

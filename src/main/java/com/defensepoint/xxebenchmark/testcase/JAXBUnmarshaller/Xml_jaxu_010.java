@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_jaxu_010 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_jaxu_010.class);
 

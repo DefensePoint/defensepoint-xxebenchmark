@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_dbf_013 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_dbf_013.class);
 

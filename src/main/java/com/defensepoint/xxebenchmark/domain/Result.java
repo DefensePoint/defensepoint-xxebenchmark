@@ -15,9 +15,6 @@ public class Result {
     private String configuration;
     private Vulnerability vulnerable;
 
-    public Result(Document document) {
-    }
-
     public Result(String testId, String testName, Parser parser, String configuration, Vulnerability vulnerable) {
         this.testId = testId;
         this.testName = testName;

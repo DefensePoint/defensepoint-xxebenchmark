@@ -33,7 +33,8 @@ public class Xml_xif_012 {
         String testName = "Local File Inclusion / External entities and DTDs are disabled";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\") " +
-                               "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\")";
+                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\") " +
+                "factory.setProperty(\"javax.xml.stream.isReplacingEntityReferences\", false)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         String foo = "";
@@ -46,6 +47,7 @@ public class Xml_xif_012 {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            factory.setProperty("javax.xml.stream.isReplacingEntityReferences", false);
 
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));
 

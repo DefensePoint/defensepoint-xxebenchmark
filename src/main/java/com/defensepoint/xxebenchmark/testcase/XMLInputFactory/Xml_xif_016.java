@@ -21,33 +21,30 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 //@Component
-public class Xml_xif_006 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_xif_006.class);
+public class Xml_xif_016 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_xif_016.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_xif_006");
+        logger.info("Xml_xif_016");
 
-        String testId = "xml-xif-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-006";
-        String testName = "File Disclosure / External entities and DTDs are disabled";
+        String testId = "xml-xif-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-016";
+        String testName = "Remote Schema / OWASP configuration";
         Parser parser = Parser.XMLInputFactory;
-        String configuration = "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\") " +
-                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\") " +
-                "factory.setProperty(\"javax.xml.stream.isReplacingEntityReferences\", false)";
+        String configuration = "factory.setProperty(XMLInputFactory.SUPPORT_DTD, false) " +
+                "factory.setProperty(\"javax.xml.stream.isSupportingExternalEntities\", false)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
-
-        String foo = "";
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteSchema.xml")).getFile());
             String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-            factory.setProperty("javax.xml.stream.isReplacingEntityReferences", false);
+            factory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            factory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));
 
@@ -59,7 +56,7 @@ public class Xml_xif_006 {
                     if (streamReader.isStartElement()) {
                         //Read foo data
                         if (streamReader.getLocalName().equalsIgnoreCase("foo")) {
-                            foo = streamReader.getElementText();
+                            String foo = streamReader.getElementText();
                             logger.info(foo);
                         }
                     }
@@ -67,11 +64,12 @@ public class Xml_xif_006 {
             }
         } catch (XMLStreamException e) {
             logger.error("XMLStreamException was thrown: " + e.getMessage());
+            if(e.getMessage().contains("accessExternalDTD")){
+                vulnerable = Vulnerability.NO;
+            }
         } catch (IOException e) {
             logger.error("IOException was thrown. IOException occurred, XXE may still possible: " + e.getMessage());
         } finally {
-            vulnerable = foo.equalsIgnoreCase("XXE") ? Vulnerability.YES : Vulnerability.NO;
-
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
             Result.results.add(result);
             logger.info("Result: " + result.toString());

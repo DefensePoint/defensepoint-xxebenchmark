@@ -26,7 +26,7 @@ public class Xml_stf_015 {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-015";
         String testName = "Local XSLT Transformation / default configuration";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

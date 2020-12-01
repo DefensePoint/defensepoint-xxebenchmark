@@ -33,7 +33,7 @@ public class Xml_stf_014 {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-014";
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / FEATURE_SECURE_PROCESSING is enabled";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

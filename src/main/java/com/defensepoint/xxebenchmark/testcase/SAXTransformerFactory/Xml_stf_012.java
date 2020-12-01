@@ -33,7 +33,7 @@ public class Xml_stf_012 {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-012";
         String testName = "Local File Inclusion / FEATURE_SECURE_PROCESSING is enabled";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

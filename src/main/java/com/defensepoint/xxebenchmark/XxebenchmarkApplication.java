@@ -111,6 +111,8 @@ public class XxebenchmarkApplication {
         new Xml_stf_016().parse();
         new Xml_stf_017().parse();
         new Xml_stf_018().parse();
+        new Xml_stf_019().parse();
+        new Xml_stf_020().parse();
     }
 
     private static void TestSchemaFactory() {
@@ -153,6 +155,8 @@ public class XxebenchmarkApplication {
         new Xml_tf_016().parse();
         new Xml_tf_017().parse();
         new Xml_tf_018().parse();
+        new Xml_tf_019().parse();
+        new Xml_tf_020().parse();
     }
 
     private static void TestValidation() {
@@ -187,6 +191,8 @@ public class XxebenchmarkApplication {
         new Xml_xif_012().parse();
         new Xml_xif_013().parse();
         new Xml_xif_014().parse();
+        new Xml_xif_015().parse();
+        new Xml_xif_016().parse();
     }
 
     private static void TestXMLReader() {

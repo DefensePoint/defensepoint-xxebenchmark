@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -19,12 +20,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_vld_008 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_vld_008.class);
 
     //@PostConstruct
-    public void validate() {
+    public void parse() {
 
         logger.info("Xml_vld_008");
 

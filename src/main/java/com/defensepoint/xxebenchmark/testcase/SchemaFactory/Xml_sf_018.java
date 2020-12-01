@@ -16,11 +16,11 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_sf_018 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_sf_018.class);
 
-    @PostConstruct
+    //@PostConstruct
     public void parse() {
 
         logger.info("Xml_sf_018");

@@ -20,7 +20,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_stf_006 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_stf_006.class);
 

@@ -1,4 +1,4 @@
-package com.defensepoint.xxebenchmark;
+package com.defensepoint.xxebenchmark.service;
 
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.opencsv.bean.ColumnPositionMappingStrategy;

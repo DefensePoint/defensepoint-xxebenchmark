@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-@Component
+//@Component
 public class Xml_stf_014 {
     private static final Logger logger = LoggerFactory.getLogger(Xml_stf_014.class);
 

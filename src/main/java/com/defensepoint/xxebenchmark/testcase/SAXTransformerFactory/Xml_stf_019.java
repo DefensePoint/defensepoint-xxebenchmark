@@ -15,37 +15,38 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Objects;
 
 //@Component
-public class Xml_stf_006 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_stf_006.class);
+public class Xml_stf_019 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_stf_019.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_stf_006");
+        logger.info("Xml_stf_019");
 
-        String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-006";
-        String testName = "File Disclosure / FEATURE_SECURE_PROCESSING is enabled";
+        String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-019";
+        String testName = "Local File Inclusion / OWASP Configuration";
         Parser parser = Parser.SAXTransformerFactory;
-        String configuration = "transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)";
+        String configuration = "transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, \"\") " +
+                "transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, \"\")";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         String foo = "";
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
+            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localFileInclusion.xml")).getFile());
 
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
-            SAXTransformerFactory transformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
-            transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             Transformer transformer = transformerFactory.newTransformer();
 
             Document document = builder.newDocument();

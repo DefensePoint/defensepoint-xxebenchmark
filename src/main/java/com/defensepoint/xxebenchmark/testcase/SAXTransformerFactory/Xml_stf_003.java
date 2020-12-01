@@ -55,7 +55,7 @@ class Xml_stf_003_thread implements Runnable {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-003";
         String testName = "Denial-of-Service - Quadratic Blowup / default configuration";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

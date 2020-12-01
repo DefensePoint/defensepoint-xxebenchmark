@@ -26,7 +26,7 @@ public class Xml_stf_017 {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-017";
         String testName = "Remote XSLT Transformation / default configuration";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

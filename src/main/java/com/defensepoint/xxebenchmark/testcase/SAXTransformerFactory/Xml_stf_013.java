@@ -32,7 +32,7 @@ public class Xml_stf_013 {
 
         String testId = "xml-stf-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-013";
         String testName = "Remote File Inclusion - SSRF (Server Side Request Forgery) / default configuration";
-        Parser parser = Parser.TransformerFactory;
+        Parser parser = Parser.SAXTransformerFactory;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 

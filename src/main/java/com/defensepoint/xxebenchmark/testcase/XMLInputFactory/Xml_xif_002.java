@@ -53,7 +53,8 @@ class Xml_xif_002_thread implements Runnable {
         String testName = "Denial-of-Service - Billion Laughs / External entities and DTDs are disabled";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\") " +
-                               "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\")";
+                                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, \"\") " +
+                                "factory.setProperty(\"javax.xml.stream.isReplacingEntityReferences\", false)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         LocalDateTime nowStart = null;

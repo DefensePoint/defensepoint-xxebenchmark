@@ -54,6 +54,8 @@ public class XxebenchmarkApplication {
         new Xml_dbf_012().parse();
         new Xml_dbf_013().parse();
         new Xml_dbf_014().parse();
+        new Xml_dbf_015().parse();
+        new Xml_dbf_016().parse();
     }
 
     private static void TestJAXBUnmarshaller() {
@@ -142,6 +144,8 @@ public class XxebenchmarkApplication {
         new Xml_sf_016().parse();
         new Xml_sf_017().parse();
         new Xml_sf_018().parse();
+        new Xml_sf_019().parse();
+        new Xml_sf_020().parse();
     }
 
     private static void TestTransformerFactory() {
@@ -182,6 +186,8 @@ public class XxebenchmarkApplication {
         new Xml_vld_012().parse();
         new Xml_vld_013().parse();
         new Xml_vld_014().parse();
+        new Xml_vld_015().parse();
+        new Xml_vld_016().parse();
     }
 
     private static void TestXMLInputFactory() {

@@ -37,7 +37,7 @@ public class Xml_tf_005 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
+            InputStream inputStream = classLoader.getResourceAsStream("xml/fileDisclosure.xml");
 
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -46,11 +46,10 @@ public class Xml_tf_005 {
             Transformer transformer = transformerFactory.newTransformer();
 
             Document document = builder.newDocument();
-            try ( FileInputStream in = new FileInputStream(xmlFile)) {
-                Source loadSource = new StreamSource(in);
-                Result loadResult = new DOMResult(document);
-                transformer.transform(loadSource, loadResult);
-            }
+            Source loadSource = new StreamSource(inputStream);
+            Result loadResult = new DOMResult(document);
+            transformer.transform(loadSource, loadResult);
+
             document.getDocumentElement().normalize();
             foo = document.getDocumentElement().getTextContent();
 
@@ -60,8 +59,6 @@ public class Xml_tf_005 {
             logger.error("TransformerConfigurationException: " + e.getMessageAndLocation());
         } catch (TransformerException e) {
             logger.error("TransformerException: " + e.getMessageAndLocation());
-        } catch (IOException e) {
-            logger.error("IOException: " + e.getMessage());
         } catch (ParserConfigurationException e) {
             logger.error("ParserConfigurationException: " + e.getMessage());
         } finally {

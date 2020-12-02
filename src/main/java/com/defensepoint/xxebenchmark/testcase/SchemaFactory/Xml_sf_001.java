@@ -13,12 +13,14 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -59,17 +61,18 @@ class Xml_sf_001_thread implements Runnable {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xsd")).getFile());
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/userWithBillionLaughsDtd.xml")).getFile());
-            StreamSource source = new StreamSource(xmlFile);
+            InputStream xsdFile = classLoader.getResourceAsStream("xml/user.xsd");
+            InputStream xmlFile = classLoader.getResourceAsStream("xml/userWithBillionLaughsDtd.xml");
+            StreamSource xsd = new StreamSource(xsdFile);
+            StreamSource xml = new StreamSource(xmlFile);
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(xsdFile);
+            Schema schema = factory.newSchema(xsd);
 
             Validator validator = schema.newValidator();
 
             nowStart = LocalDateTime.now();
-            validator.validate(source);
+            validator.validate(xml);
             nowEnd = LocalDateTime.now();
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());

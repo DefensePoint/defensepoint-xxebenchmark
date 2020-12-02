@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -53,25 +54,25 @@ class Xml_dbf_001_thread implements Runnable {
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/dos.xml")).getFile());
-
-        //Parser that produces DOM object trees from XML content
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        //API to obtain DOM Document instance
-        DocumentBuilder builder;
-
         LocalDateTime nowStart = null;
         LocalDateTime nowEnd = null;
 
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("xml/dos.xml");
+
+            //Parser that produces DOM object trees from XML content
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            //API to obtain DOM Document instance
+            DocumentBuilder builder;
+
             //Create DocumentBuilder with default configuration
             builder = factory.newDocumentBuilder();
 
             //Parse the content to Document object
             nowStart = LocalDateTime.now();
-            Document doc = builder.parse(xmlFile);
+            Document doc = builder.parse(inputStream);
             nowEnd = LocalDateTime.now();
 
             //Normalize the XML Structure

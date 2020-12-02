@@ -18,6 +18,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 //@Component
@@ -37,16 +38,17 @@ public class Xml_sf_010 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/user.xsd")).getFile());
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/userWithRemoteSchemaDtd.xml")).getFile());
-            StreamSource source = new StreamSource(xmlFile);
+            InputStream xsdFile = classLoader.getResourceAsStream("xml/user.xsd");
+            InputStream xmlFile = classLoader.getResourceAsStream("xml/userWithRemoteSchemaDtd.xml");
+            StreamSource xsd = new StreamSource(xsdFile);
+            StreamSource xml = new StreamSource(xmlFile);
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            Schema schema = factory.newSchema(xsdFile);
+            Schema schema = factory.newSchema(xsd);
 
             Validator validator = schema.newValidator();
-            validator.validate(source);
+            validator.validate(xml);
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
             if(e.getMessage().contains("accessExternalDTD")){

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE foo [<!ENTITY ent SYSTEM "../files/passwd"> ]>
+<!DOCTYPE foo [<!ENTITY ent SYSTEM "/XXEBenchmarkFiles/passwd"> ]>
 <user>
     <name>Jond</name>
     <surname>&ent;</surname>

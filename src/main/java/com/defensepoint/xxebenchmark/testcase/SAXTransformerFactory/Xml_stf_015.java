@@ -2,6 +2,7 @@ package com.defensepoint.xxebenchmark.testcase.SAXTransformerFactory;
 
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Objects;
 
@@ -31,8 +33,8 @@ public class Xml_stf_015 {
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xslt")).getFile());
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xml")).getFile());
+        InputStream xsltFile = classLoader.getResourceAsStream("xml/foo.xslt");
+        InputStream xmlFile = classLoader.getResourceAsStream("xml/foo.xml");
         Source xslt = new StreamSource(xsltFile);
         Source xml  = new StreamSource(xmlFile);
 

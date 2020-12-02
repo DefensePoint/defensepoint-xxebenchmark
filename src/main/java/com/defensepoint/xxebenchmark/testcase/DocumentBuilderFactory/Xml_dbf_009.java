@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 //@Component
@@ -34,17 +35,17 @@ public class Xml_dbf_009 {
         String configuration = "";
         final Vulnerability[] vulnerable = {Vulnerability.NO};
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/remoteWrongSchema.xml")).getFile());
-
-        //Parser that produces DOM object trees from XML content
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(true);
-
-        //API to obtain DOM Document instance
-        DocumentBuilder builder;
-
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("xml/remoteWrongSchema.xml");
+
+            //Parser that produces DOM object trees from XML content
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(true);
+
+            //API to obtain DOM Document instance
+            DocumentBuilder builder;
+
             //Create DocumentBuilder with default configuration
             builder = factory.newDocumentBuilder();
 
@@ -71,7 +72,7 @@ public class Xml_dbf_009 {
             });
 
             //Parse the content to Document object
-            builder.parse(xmlFile);
+            builder.parse(inputStream);
 
         } catch (ParserConfigurationException e) {
             logger.error("ParserConfigurationException was thrown: " + e.getMessage());

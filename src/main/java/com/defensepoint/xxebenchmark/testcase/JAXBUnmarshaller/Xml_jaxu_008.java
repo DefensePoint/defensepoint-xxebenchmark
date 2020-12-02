@@ -1,6 +1,7 @@
 package com.defensepoint.xxebenchmark.testcase.JAXBUnmarshaller;
 
 import com.defensepoint.xxebenchmark.domain.*;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +36,8 @@ public class Xml_jaxu_008 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localSchemaNote.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/localSchemaNote.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             JAXBContext jaxbContext = JAXBContext.newInstance(Note.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

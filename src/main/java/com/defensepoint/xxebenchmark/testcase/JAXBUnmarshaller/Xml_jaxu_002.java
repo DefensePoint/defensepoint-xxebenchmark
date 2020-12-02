@@ -2,6 +2,7 @@ package com.defensepoint.xxebenchmark.testcase.JAXBUnmarshaller;
 
 import com.defensepoint.xxebenchmark.domain.*;
 import com.defensepoint.xxebenchmark.service.TimeOutTask;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,8 +59,8 @@ class Xml_jaxu_002_thread implements Runnable {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/dosNote.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/dosNote.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             JAXBContext jaxbContext = JAXBContext.newInstance(Note.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

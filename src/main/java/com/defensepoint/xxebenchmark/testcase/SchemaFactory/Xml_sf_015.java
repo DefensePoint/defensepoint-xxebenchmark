@@ -12,8 +12,10 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Objects;
 
 //@Component
@@ -33,10 +35,11 @@ public class Xml_sf_015 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xsdFile = new File(Objects.requireNonNull(classLoader.getResource("xml/Company.xsd")).getFile());
+            InputStream xsdFile = classLoader.getResourceAsStream("xml/Company.xsd");
+            StreamSource xsd = new StreamSource(xsdFile);
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            factory.newSchema(xsdFile);
+            factory.newSchema(xsd);
 
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());

@@ -10,14 +10,22 @@ import com.defensepoint.xxebenchmark.testcase.SchemaFactory.*;
 import com.defensepoint.xxebenchmark.testcase.Validator.*;
 import com.defensepoint.xxebenchmark.testcase.XMLInputFactory.*;
 import com.defensepoint.xxebenchmark.testcase.XMLReader.*;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.io.*;
 
 @SpringBootApplication
 public class XxebenchmarkApplication {
 
+    private static final Logger logger = LoggerFactory.getLogger(XxebenchmarkApplication.class);
+
     public static void main(String[] args) {
         SpringApplication.run(XxebenchmarkApplication.class, args);
+
+        CreateRequiredFiles();
 
         TestDocumentBuilderFactory();
         TestJAXBUnmarshaller();
@@ -212,4 +220,27 @@ public class XxebenchmarkApplication {
         new Xml_xr_014().parse();
     }
 
+    private static void CreateRequiredFiles() {
+
+        String[] files = {"bar.dtd", "external.xslt", "foo.dtd", "note.dtd", "passwd", "secret.txt"};
+
+        File newDir = new File("/XXEBenchmarkFiles");
+        if (newDir.mkdirs()) {
+            logger.info("folder created");
+        } else {
+            logger.info("folder exists");
+        }
+
+        try {
+            for (String file: files) {
+                ClassLoader classLoader = XxebenchmarkApplication.class.getClassLoader();
+                InputStream inputStream = classLoader.getResourceAsStream("files/" + file);
+
+                File targetFile = new File("/XXEBenchmarkFiles/" + file);
+                FileUtils.copyInputStreamToFile(inputStream, targetFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

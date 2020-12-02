@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE foo [
 <!ELEMENT foo ANY>
-<!ENTITY pass SYSTEM "src/main/resources/files/passwd">]>
+<!ENTITY pass SYSTEM "/XXEBenchmarkFiles/passwd">]>
 <note><foo>&pass;</foo></note>

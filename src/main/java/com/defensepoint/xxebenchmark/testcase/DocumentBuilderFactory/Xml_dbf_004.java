@@ -5,6 +5,7 @@ import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.service.TimeOutTask;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -54,19 +56,19 @@ class Xml_dbf_004_thread implements Runnable {
         String configuration = "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/quadraticBlowup.xml")).getFile());
-
-        //Parser that produces DOM object trees from XML content
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        //API to obtain DOM Document instance
-        DocumentBuilder builder;
-
         LocalDateTime nowStart = null;
         LocalDateTime nowEnd = null;
 
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("xml/quadraticBlowup.xml");
+
+            //Parser that produces DOM object trees from XML content
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            //API to obtain DOM Document instance
+            DocumentBuilder builder;
+
             //Disallow dtd
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 
@@ -75,7 +77,7 @@ class Xml_dbf_004_thread implements Runnable {
 
             //Parse the content to Document object
             nowStart = LocalDateTime.now();
-            Document doc = builder.parse(xmlFile);
+            Document doc = builder.parse(inputStream);
             nowEnd = LocalDateTime.now();
 
             //Normalize the XML Structure

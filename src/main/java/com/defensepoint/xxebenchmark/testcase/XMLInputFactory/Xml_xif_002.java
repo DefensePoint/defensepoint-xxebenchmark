@@ -5,6 +5,7 @@ import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
 import com.defensepoint.xxebenchmark.service.TimeOutTask;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -62,8 +64,8 @@ class Xml_xif_002_thread implements Runnable {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/dos.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/dos.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");

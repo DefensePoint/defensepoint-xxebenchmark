@@ -13,6 +13,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Objects;
 
@@ -32,8 +33,8 @@ public class Xml_tf_017 {
         Vulnerability vulnerable = Vulnerability.YES; // Initial value, vulnerable payload
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File xsltFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fooRemote.xslt")).getFile());
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/foo.xml")).getFile());
+        InputStream xsltFile = classLoader.getResourceAsStream("xml/fooRemote.xslt");
+        InputStream xmlFile = classLoader.getResourceAsStream("xml/foo.xml");
         Source xslt = new StreamSource(xsltFile);
         Source xml  = new StreamSource(xmlFile);
 

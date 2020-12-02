@@ -3,6 +3,7 @@ package com.defensepoint.xxebenchmark.testcase.SAXReader;
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -16,6 +17,7 @@ import org.xml.sax.InputSource;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,8 +42,8 @@ public class Xml_sr_005 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosure.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/fileDisclosure.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             SAXReader xmlReader = new SAXReader();
 

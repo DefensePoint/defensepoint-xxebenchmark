@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 //@Component
@@ -34,23 +35,23 @@ public class Xml_dbf_005 {
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/fileDisclosureDbf.xml")).getFile());
-
-        //Parser that produces DOM object trees from XML content
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        //API to obtain DOM Document instance
-        DocumentBuilder builder;
-
         String foo = "";
 
         try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("xml/fileDisclosure.xml");
+
+            //Parser that produces DOM object trees from XML content
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            //API to obtain DOM Document instance
+            DocumentBuilder builder;
+
             //Create DocumentBuilder with default configuration
             builder = factory.newDocumentBuilder();
 
             //Parse the content to Document object
-            Document doc = builder.parse(xmlFile);
+            Document doc = builder.parse(inputStream);
 
             //Normalize the XML Structure
             doc.getDocumentElement().normalize();

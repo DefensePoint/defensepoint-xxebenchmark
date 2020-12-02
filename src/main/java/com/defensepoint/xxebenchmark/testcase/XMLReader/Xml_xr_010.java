@@ -3,6 +3,7 @@ package com.defensepoint.xxebenchmark.testcase.XMLReader;
 import com.defensepoint.xxebenchmark.domain.Parser;
 import com.defensepoint.xxebenchmark.domain.Result;
 import com.defensepoint.xxebenchmark.domain.Vulnerability;
+import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,8 +39,8 @@ public class Xml_xr_010 {
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File xmlFile = new File(Objects.requireNonNull(classLoader.getResource("xml/localSchema.xml")).getFile());
-            String xmlString = new String ( Files.readAllBytes( Paths.get(xmlFile.getAbsolutePath()) ) );
+            InputStream inputStream = classLoader.getResourceAsStream("xml/remoteSchema.xml");
+            String xmlString = FileUtil.readFromInputStream(inputStream);
 
             FooReaderHandler handler = new FooReaderHandler();
             XMLReader reader = XMLReaderFactory.createXMLReader();

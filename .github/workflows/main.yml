@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
   workflow_dispatch:
 
 jobs:
@@ -12,26 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Java application
     steps:
-
       - name: Update and install prerequisites
         run: |
           apt-get update
           apt get install -y mlocate tree
-
       - name: Checkout to branch
         uses: actions/checkout@v2
-
       - name: Create output directory
         run: |
           mkdir -p java_app
           mkdir -p test_results
           pwd
           ls -la
-
       - name: Create container
         uses: ./actions
         id: build
-
       - name: Verify results
         run: |
           tree java_app

@@ -59,7 +59,7 @@ jobs:
         run: |
           java -version
       - name: Run application test
-        run: sudo java -jar $(ls xxebenchmark-*.jar)
+        run: java -jar $(ls xxebenchmark-*.jar)
       - name: Create artifactory directory for result
         run: mkdir result && cp output.csv result
       - name: Upload test result to Github artifactory

@@ -15,10 +15,8 @@ jobs:
     steps:
       - name: Update and install prerequisites
         run: |
-          whoami
-          sudo -l
-          apt-get update
-          apt get install -y mlocate tree
+          sudo apt-get update
+          sudo apt get install -y mlocate tree
       - name: Checkout to branch
         uses: actions/checkout@v2
       - name: Create output directory

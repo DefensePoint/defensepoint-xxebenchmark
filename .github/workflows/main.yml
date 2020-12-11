@@ -1,8 +1,9 @@
-# Guidelines to build and test applications:
+# Guidelines and helpers to build and test applications:
 # https://docs.github.com/en/free-pro-team@latest/actions/guides/building-and-testing-java-with-maven
 # https://docs.github.com/en/free-pro-team@latest/actions/guides/storing-workflow-data-as-artifacts
 # https://github.com/actions/setup-java
 # https://github.com/actions/setup-java#matrix-testing
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast
 
 name: Build and test with Docker
 
@@ -41,6 +42,7 @@ jobs:
     needs: BUILD_APPLICATION
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # java: [ 1.8, 1.6, 6.0.83, 7, 7.0.181, 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
         java: [ 1.8, 1.6 ]

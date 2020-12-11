@@ -35,7 +35,7 @@ on:
 #           ls -la /
 
 jobs:
-  job_build_application:
+  BUILD_APPLICATION:
     name: Build Java application
     runs-on: ubuntu-latest
     steps:
@@ -53,6 +53,19 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Verify results
         run: |
-          tree java_app
-          tree test_results
-          ls -la /
+          pwd
+          echo -e "============================================================"
+          ls -la
+          echo -e "============================================================"
+          ls -la target
+  TEST_APPLICATION:
+    name: Test builded application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check directory content
+        run: |
+          pwd
+          echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          ls -la
+          echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          ls -la target

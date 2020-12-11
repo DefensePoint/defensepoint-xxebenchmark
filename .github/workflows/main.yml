@@ -53,8 +53,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - run: touch testfile
-      - run: ls -la
+      - name: DEBUGGING
+        run: |
+          touch testfile
+          ls -la
+          java -version
       - name: Run application test
         run: java -jar $(ls xxebenchmark-*.jar)
       - name: Create artifactory directory for result

@@ -1,6 +1,7 @@
 # Guidelines to build and test applications:
 # https://docs.github.com/en/free-pro-team@latest/actions/guides/building-and-testing-java-with-maven
 # https://docs.github.com/en/free-pro-team@latest/actions/guides/storing-workflow-data-as-artifacts
+# https://github.com/actions/setup-java
 
 name: Build and test with Docker
 
@@ -44,5 +45,4 @@ jobs:
         with:
           name: app_build_package
       - name: Set app name as variable
-        run: export JAVA_APP=$(ls xxebenchmark-*.jar)
-      - run: echo "app name is ${JAVA_APP}"
+        run: echo "app name is $(ls xxebenchmark-*.jar)"

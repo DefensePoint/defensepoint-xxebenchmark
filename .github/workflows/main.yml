@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 name: Build_and_test_with_Docker
 
+=======
+name: Build and test with Docker
+>>>>>>> Stashed changes
 on:
   pull_request:
     branches: [ main ]

@@ -1,0 +1,7 @@
+---
+# build_action.ym
+name: 'Build application'
+description: 'Build Java application and save compiled .jar file'
+runs:
+  using: 'docker'
+  image: 'dockerfiles/Dockerfile'

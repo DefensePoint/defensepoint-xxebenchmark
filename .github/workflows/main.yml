@@ -45,4 +45,4 @@ jobs:
           name: app_build_package
       - name: Set app name as variable
         run: export JAVA_APP=$(ls xxebenchmark-*.jar)
-      - run: echo "app name is: ${JAVA_APP}"
+      - run: echo "app name is: $JAVA_APP"

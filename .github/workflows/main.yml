@@ -28,7 +28,7 @@ jobs:
       - name: Create artifactory directory
         run: mkdir staging && cp target/*.jar staging
       - name: Upload to Github artifactory
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: app_build_package
           path: staging

@@ -26,7 +26,7 @@ jobs:
           pwd
           ls -la
       - name: Create container
-        uses: ./actions
+        uses: ./docker_actions
         id: build
       - name: Verify results
         run: |

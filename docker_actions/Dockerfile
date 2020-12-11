@@ -2,8 +2,8 @@
 FROM maven:3.6.3-openjdk-16
 
 # Copy source code to image
-COPY ./src /home/app/src
-COPY ./pom.xml /home/app
+COPY /home/runner/work/defensepoint-xxebenchmark/defensepoint-xxebenchmark/src /home/app/src
+COPY /home/runner/work/defensepoint-xxebenchmark/defensepoint-xxebenchmark/pom.xml /home/app
 
 VOLUME ["/volumetest"]
 

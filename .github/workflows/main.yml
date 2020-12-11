@@ -43,6 +43,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: app_build_package
+      - name: Check Java version
+        run: java -version
       - name: Set app name as variable
-        run: export JAVA_APP=$(ls xxebenchmark-*.jar)
-      - run: echo "app name is: $JAVA_APP"
+        run: echo "app name is: ${JAVA_APP}"
+        env:
+          JAVA_APP: $(ls xxebenchmark-*.jar)

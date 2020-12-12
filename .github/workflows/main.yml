@@ -60,19 +60,19 @@ jobs:
       - name: DEBUGGING
         run: |
           java -version
+          echo
       - name: Run application test
-        run: java -jar $(ls xxebenchmark-*.jar)
-      - name: DEBUGGING
         run: |
-          ls -la
-        if: always()
+          set +e
+          java -jar $(ls xxebenchmark-*.jar)
+          set -e
       - name: Create artifactory directory for result
         run: mkdir result && cp output.csv result
-        if: always()
+        # if: always()
       - name: Upload test result to Github artifactory
         uses: actions/upload-artifact@v2
         with:
-          name: test_result_${{ matrix.java }}
+          name: test_result_${{ matrix.java }}_$(java -version 2>&1 | grep version | awk '{print $1}')
           path: result
           retention-days: 1
-        if: always()
+        # if: always()

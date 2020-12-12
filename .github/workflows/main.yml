@@ -68,9 +68,11 @@ jobs:
         if: always()
       - name: Create artifactory directory for result
         run: mkdir result && cp output.csv result
+        if: always()
       - name: Upload test result to Github artifactory
         uses: actions/upload-artifact@v2
         with:
           name: test_result_${{ matrix.java }}
           path: result
           retention-days: 1
+        if: always()

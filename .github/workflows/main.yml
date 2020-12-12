@@ -7,7 +7,7 @@
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions
 
-name: Build and test with Docker
+name: Build and test Java applications
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
           retention-days: 1
 
   TEST_APPLICATION:
-    name: Test builded application with Java ${{ matrix.java }}
+    name: Test application with OpenJDK ${{ matrix.java }}
     needs: BUILD_APPLICATION
     runs-on: ubuntu-latest
     strategy:
@@ -57,9 +57,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: DEBUGGING
-        run: |
-          java -version
       - name: Run application test
         run: |
           set +e
@@ -73,4 +70,4 @@ jobs:
           name: test_result_${{ matrix.java }}
           path: result
           retention-days: 1
-        if: always()
+        # if: always()

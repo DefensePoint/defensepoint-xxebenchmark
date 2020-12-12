@@ -67,7 +67,7 @@ jobs:
       - name: Upload test result to Github artifactory
         uses: actions/upload-artifact@v2
         with:
-          name: test_result_${{ matrix.java }}
+          name: test_result_OpenJDK-${{ matrix.java }}
           path: result
           retention-days: 1
         # if: always()

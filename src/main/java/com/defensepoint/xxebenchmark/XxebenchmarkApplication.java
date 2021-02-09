@@ -66,6 +66,14 @@ public class XxebenchmarkApplication {
         new Xml_jaxu_010().parse();
         new Xml_jaxu_012().parse();
         new Xml_jaxu_014().parse();
+        new Xml_jaxu_015().parse();
+        new Xml_jaxu_016().parse();
+        new Xml_jaxu_017().parse();
+        new Xml_jaxu_018().parse();
+        new Xml_jaxu_019().parse();
+        new Xml_jaxu_020().parse();
+        new Xml_jaxu_021().parse();
+        new Xml_jaxu_022().parse();
     }
 
     private static void TestSAXBuilder() {
@@ -228,7 +236,7 @@ public class XxebenchmarkApplication {
 
     private static void CreateRequiredFiles() {
 
-        String[] files = {"bar.dtd", "external.xslt", "foo.dtd", "note.dtd", "passwd", "secret.txt"};
+        String[] files = {"bar.dtd", "external.xslt", "foo.dtd", "note.dtd", "passwd", "secret.txt", "fileDisclosureNote.xml"};
 
         File newDir = new File("/XXEBenchmarkFiles");
         if (newDir.mkdirs()) {

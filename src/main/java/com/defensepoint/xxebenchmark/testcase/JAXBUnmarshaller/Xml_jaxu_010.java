@@ -27,7 +27,7 @@ public class Xml_jaxu_010 {
         logger.info("Xml_jaxu_010");
 
         String testId = "xml-jaxu-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-010";
-        String testName = "Remote Schema / DTDs (doctypes) are disallowed";
+        String testName = "Remote Schema / default configuration";
         Parser parser = Parser.JAXBUnmarshaller;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.

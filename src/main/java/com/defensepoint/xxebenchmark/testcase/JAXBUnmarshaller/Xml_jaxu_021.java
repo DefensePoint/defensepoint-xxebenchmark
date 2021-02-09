@@ -24,7 +24,7 @@ public class Xml_jaxu_021 {
         logger.info("Xml_jaxu_021");
 
         String testId = "xml-jaxu-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-021";
-        String testName = "File Disclosure / default configuration / Unmarshalling from a StAX XMLEventReader";
+        String testName = "File Disclosure / default configuration / Unmarshalling from a StAX XMLEventReader and XMLInputFactory";
         Parser parser = Parser.JAXBUnmarshaller;
         String configuration = "";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.

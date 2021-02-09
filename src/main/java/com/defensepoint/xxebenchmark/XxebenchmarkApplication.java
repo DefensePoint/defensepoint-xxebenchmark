@@ -74,6 +74,7 @@ public class XxebenchmarkApplication {
         new Xml_jaxu_020().parse();
         new Xml_jaxu_021().parse();
         new Xml_jaxu_022().parse();
+        new Xml_jaxu_023().parse();
     }
 
     private static void TestSAXBuilder() {

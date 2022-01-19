@@ -7,36 +7,28 @@ import com.defensepoint.xxebenchmark.util.FileUtil;
 import com.defensepoint.xxebenchmark.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
 
 //@Component
-public class Xml_xif_016 {
-    private static final Logger logger = LoggerFactory.getLogger(Xml_xif_016.class);
+public class Xml_xif_018 {
+    private static final Logger logger = LoggerFactory.getLogger(Xml_xif_018.class);
 
     //@PostConstruct
     public void parse() {
 
-        logger.info("Xml_xif_016");
+        logger.info("Xml_xif_018");
 
-        String testId = "xml-xif-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-016";
-        String testName = "Remote Schema / OWASP configuration";
+        String testId = "xml-xif-" + OSUtil.getOS() + "-" + System.getProperty("java.version") + "-018";
+        String testName = "Remote Schema / SonarSource configuration";
         Parser parser = Parser.XMLInputFactory;
-        String configuration = "factory.setProperty(XMLInputFactory.SUPPORT_DTD, false) " +
-                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\")" +
-                "factory.setProperty(\"javax.xml.stream.isSupportingExternalEntities\", false)";
+        String configuration = "factory.setProperty(XMLInputFactory.SUPPORT_DTD, false)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
         try {
@@ -46,14 +38,10 @@ public class Xml_xif_016 {
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
 
-            // OWASP Recommendation
+            // SonarSource Recommendation
 
-            // This disables DTDs entirely for that factory
+            // to be compliant, completely disable DOCTYPE declaration:
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-            // This causes XMLStreamException to be thrown if external DTDs are accessed.
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            // disable external entities
-            factory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));
 

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -34,6 +35,7 @@ public class Xml_xif_015 {
         String testName = "Local Schema / OWASP Configuration";
         Parser parser = Parser.XMLInputFactory;
         String configuration = "factory.setProperty(XMLInputFactory.SUPPORT_DTD, false) " +
+                "factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, \"\")" +
                 "factory.setProperty(\"javax.xml.stream.isSupportingExternalEntities\", false)";
         Vulnerability vulnerable = Vulnerability.YES; // Initial value. Vulnerable payload.
 
@@ -43,8 +45,14 @@ public class Xml_xif_015 {
             String xmlString = FileUtil.readFromInputStream(inputStream);
 
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            factory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
+
+            // OWASP Recommendation
+
+            // This disables DTDs entirely for that factory
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            // This causes XMLStreamException to be thrown if external DTDs are accessed.
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            // disable external entities
             factory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
             XMLStreamReader streamReader = factory.createXMLStreamReader(new StringReader(xmlString));

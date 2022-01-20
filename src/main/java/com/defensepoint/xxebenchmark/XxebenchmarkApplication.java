@@ -1,5 +1,6 @@
 package com.defensepoint.xxebenchmark;
 
+import com.defensepoint.xxebenchmark.testcase.SAXParserFactory.*;
 import com.defensepoint.xxebenchmark.testcase.TransformerFactory.*;
 import com.defensepoint.xxebenchmark.testcase.DocumentBuilderFactory.*;
 import com.defensepoint.xxebenchmark.testcase.JAXBUnmarshaller.*;
@@ -30,6 +31,7 @@ public class XxebenchmarkApplication {
         TestDocumentBuilderFactory();
         TestJAXBUnmarshaller();
         TestSAXBuilder();
+        TestSAXParserFactory();
         TestSAXReader();
         TestSAXTransformerFactory();
         TestSchemaFactory();
@@ -92,6 +94,23 @@ public class XxebenchmarkApplication {
         new Xml_sb_012().parse();
         new Xml_sb_013().parse();
         new Xml_sb_014().parse();
+    }
+
+    private static void TestSAXParserFactory() {
+        new Xml_spf_001().parse();
+        new Xml_spf_002().parse();
+        new Xml_spf_003().parse();
+        new Xml_spf_004().parse();
+        new Xml_spf_005().parse();
+        new Xml_spf_006().parse();
+        new Xml_spf_007().parse();
+        new Xml_spf_008().parse();
+        new Xml_spf_009().parse();
+        new Xml_spf_010().parse();
+        new Xml_spf_011().parse();
+        new Xml_spf_012().parse();
+        new Xml_spf_013().parse();
+        new Xml_spf_014().parse();
     }
 
     private static void TestSAXReader() {
@@ -216,6 +235,8 @@ public class XxebenchmarkApplication {
         new Xml_xif_014().parse();
         new Xml_xif_015().parse();
         new Xml_xif_016().parse();
+        new Xml_xif_017().parse();
+        new Xml_xif_018().parse();
     }
 
     private static void TestXMLReader() {

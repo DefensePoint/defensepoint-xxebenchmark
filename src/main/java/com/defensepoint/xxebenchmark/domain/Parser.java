@@ -10,5 +10,6 @@ public enum Parser {
     SAXReader,
     XMLReader,
     SAXBuilder,
-    JAXBUnmarshaller
+    JAXBUnmarshaller,
+    SAXParserFactory
 }

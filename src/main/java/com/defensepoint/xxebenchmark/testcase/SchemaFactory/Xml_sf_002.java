@@ -76,11 +76,10 @@ class Xml_sf_002_thread implements Runnable {
             nowEnd = LocalDateTime.now();
         } catch (SAXException e) {
             logger.error("SAXException was thrown: " + e.getMessage());
-            if(e.getMessage().contains("accessExternalDTD")){
-                vulnerable = Vulnerability.NO;
-            }
         } catch (IOException e) {
             logger.error("IOException was thrown. Exception occurred, XXE may still possible: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("Exception was thrown. Exception occurred, XXE may still possible: " + e.getMessage());
         } finally {
             nowEnd = nowEnd == null ? LocalDateTime.now() : nowEnd;
             assert nowStart != null;
@@ -90,6 +89,8 @@ class Xml_sf_002_thread implements Runnable {
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));
+            } else {
+                vulnerable = Vulnerability.NO;
             }
 
             Result result = new Result(testId, testName, parser, configuration, vulnerable);

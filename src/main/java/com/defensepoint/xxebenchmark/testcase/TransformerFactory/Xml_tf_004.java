@@ -82,11 +82,10 @@ class Xml_tf_004_thread implements Runnable {
             logger.error("TransformerConfigurationException: " + e.getMessageAndLocation());
         } catch (TransformerException e) {
             logger.error("TransformerException: " + e.getMessageAndLocation());
-            if(e.getMessage().contains("accessExternalDTD")){
-                vulnerable = Vulnerability.NO;
-            }
         } catch (IOException e) {
             logger.error("IOException: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("Exception: " + e.getMessage());
         } finally {
             nowEnd = nowEnd == null ? LocalDateTime.now() : nowEnd;
             assert nowStart != null;
@@ -96,6 +95,8 @@ class Xml_tf_004_thread implements Runnable {
             if(diff > Constants.DoS_THRESHOLD) {
                 vulnerable = Vulnerability.YES;
                 logger.error(String.format("XML parsing takes more than %d (%d) milliseconds.", Constants.DoS_THRESHOLD, diff));
+            } else {
+                vulnerable = Vulnerability.NO;
             }
 
             Result result = new Result(testId, testName, parser, configuration, vulnerable);
